@@ -6,12 +6,12 @@ list = []
 
 # function gets successors for current node :)
 def getSuccessors(state):
-    child1 = copy.deepcopy(state)
-    child2 = copy.deepcopy(state)
-
     if len(state) == 1:
         return None
     else:
+        child1 = copy.deepcopy(state)
+        child2 = copy.deepcopy(state)
+        
         child1.pop(0)
         child2.pop(-1)
         return [child1, child2]
