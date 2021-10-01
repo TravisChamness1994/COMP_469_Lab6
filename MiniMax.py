@@ -13,7 +13,7 @@ class Node:
 def value(value_list, node):
     # If the value_list is empty
     if not value_list:
-        return node.utility
+        return node.utility > 0
     if node.agent:
         return max_value(node)
     if not node.agent:
@@ -22,6 +22,7 @@ def value(value_list, node):
 def max_value(node):
     utility = -math.inf
 
+
 def min_value(node):
     utility = math.inf
 
@@ -29,5 +30,7 @@ def min_value(node):
 # Minimax performs the minimax algorithm. 
 # Parameter value_list: expected to come in the form of a python list of numbers
 def minimax(value_list):
-    root_node = Node()
-    value(value_list, root_node)
+    #Tracks whether the agent 
+    agent_succeeds = False
+    root_node = Node(value_list)
+    agent_succeeds = value(value_list, root_node)
