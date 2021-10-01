@@ -2,8 +2,6 @@ import math
 import copy
 #Yarelit Mendoza and Travis Chamness :)
 game = [1,2,5,2]
-treeDepth = math.log(len(game), 2)
-
 
 # function gets successors for current node
 def getSuccessors(state):
