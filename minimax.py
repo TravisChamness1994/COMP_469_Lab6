@@ -13,21 +13,8 @@ def getSuccessors(state):
     else:
         return state
 
-#tests successors
-print("Parent node: ", game)
-successors = getSuccessors(game)
-print("Children: ", successors)
-
-print("\nParent node: ", successors[0])
-a = getSuccessors(successors[0])
-print("Children: ", a)
-
-print("\nParent node: ", a[0])
-a2 = getSuccessors(a [0])
-print("Children: ", a2)
-
 def isTerminal(node):
-    if len(node) == 1:
+    if type(node) == int:
         return True
 
 # def value(state):
@@ -37,7 +24,8 @@ def isTerminal(node):
 
 def value(state, maxTurn):
     if isTerminal(state):
-        return state[0]
+        print("In terminal state aka this is the value: ", state)
+        return state
 
     if maxTurn:
         return maxValue(state)
@@ -52,14 +40,16 @@ def value(state, maxTurn):
 # return v
 
 def maxValue(state):
+    print("Max state:", state)
     v = -math.inf
     successor = getSuccessors(state)
 
     for i in range(len(successor)):
-         v = max(v, value(successor, False))
+         v = max(v, value(successor[i], False))
+    print("Max value: ", v)
     return v
 
-print(maxValue(a2[0]))
+
 
 # def min-value(state):
 # initialize v = +inf
@@ -68,11 +58,13 @@ print(maxValue(a2[0]))
 # return v
 
 def minValue(state):
+    print("Min state:", state)
     v = math.inf
     successor =  getSuccessors(state)
 
     for i in range(len(successor)):
-        v = min(v, value(successor, True))
+        v = min(v, value(successor[i], True))
+    print("Min value:", v)
     return v
     
 value(game, True)
