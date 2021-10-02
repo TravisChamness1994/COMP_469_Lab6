@@ -1,6 +1,8 @@
 #Authored by Yarelit Mendoza and Travis Chamness
 import math
 
+#Unsuccessful Agent Branch - If the terminal state is equal or less than zero, the agent does not have a winning score on the branch
+UNSUCCESSFUL_AGENT_BRANCH = 0
 #minimum list size to create a new branch
 MINIMUM_LIST_SIZE = 1
 #Set of terminal states - May not be necessary
@@ -83,7 +85,7 @@ def successor_func(node):
         #Add terminal node to terminal list
         terminal_states.append(terminal_node)
         #Cumulative succes determines if at any point a path exists that 
-        cumulative_success = (cumulative_success or (terminal_node.cumsum > 0))
+        cumulative_success = (cumulative_success or (terminal_node.cumsum > UNSUCCESSFUL_AGENT_BRANCH))
     return node
 
 
