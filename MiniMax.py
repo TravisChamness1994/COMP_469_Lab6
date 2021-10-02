@@ -45,11 +45,28 @@ def value(node):
     if not node.agent:
         return min_value(node)
 
+def successor_func_helper(node):
+    for child in node.children:
+        child.agent = not node.agent
+        #Assign parent value
+        child.parent = node
+        #Accordingly update utility and cumsum
+        #If the children are agents
+        if child.agent:
+            #Utility will be positive and cumsum will increment
+            child.utility = child.value_list.pop(0)
+            child.cumsum += child.utility
+            
+        #If the children are opponents
+        else:
+            #Utility will be negative and cumsum will decrement
+            child.utility = -child.value_list.pop(0)
+            child.cumsum = child.cumsum - child.utility
+    return node
+
 def successor_func(node):
     global terminal_states
     global cumulative_success
-
-    #TODO - Wrap process in a func to make DRY
     #If more than one value in list of vals exists
     if len(node.value_list) > MINIMUM_LIST_SIZE:
         #Generate children
@@ -58,57 +75,18 @@ def successor_func(node):
         #Assign children to node
         node.children.append(left_child)
         node.children.append(right_child)
-        #Flips the agent value
-        left_child.agent = not node.agent
-        right_child.agent = not node.agent
-        #Assign parent to children
-        left_child.parent = node
-        right_child.parent = node
-
-        #Accordingly update utility and cumsum
-        #If the children are agents
-        if left_child.agent:
-            #Utility will be positive and cumsum will increment
-            left_child.utility = left_child.value_list.pop(0)
-            left_child.cumsum += left_child.utility
-            right_child.utility = right_child.value_list.pop()
-            right_child.cumsum += right_child.utility
-
-        #If the children are opponents
-        else:
-            #Utility will be negative and cumsum will decrement
-            left_child.utility = -left_child.value_list.pop(0)
-            left_child.cumsum = left_child.cumsum + left_child.utility
-            right_child.utility = -right_child.value_list.pop()
-            right_child.cumsum = right_child.cumsum + right_child.utility
+        node = successor_func_helper(node)
     #If the value list contains one value
     elif len(node.value_list) == MINIMUM_LIST_SIZE:
         #The child will be a terminal node
         terminal_node = node.copy()
         #Assign terminal node to parent
         node.children.append(terminal_node)
-        #Flip the agent value
-        terminal_node.agent = not node.agent
-        #Assign parent value
-        terminal_node.parent = node
-        #Accordingly update utility and cumsum
-        #If the children are agents
-        if terminal_node.agent:
-            #Utility will be positive and cumsum will increment
-            terminal_node.utility = terminal_node.value_list.pop(0)
-            terminal_node.cumsum += terminal_node.utility
-            
-        #If the children are opponents
-        else:
-            #Utility will be negative and cumsum will decrement
-            terminal_node.utility = -terminal_node.value_list.pop(0)
-            terminal_node.cumsum = terminal_node.cumsum - terminal_node.utility
-
+        node = successor_func_helper(node)
         #Add terminal node to terminal list
         terminal_states.append(terminal_node)
         #Cumulative succes determines if at any point a path exists that 
         cumulative_success = (cumulative_success or (terminal_node.cumsum > 0))
-
     return node
 
 
