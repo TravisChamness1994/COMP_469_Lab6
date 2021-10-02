@@ -53,15 +53,12 @@ def successor_func_helper(node):
         #Accordingly update utility and cumsum
         #If the children are agents
         if child.agent:
-            #Utility will be positive and cumsum will increment
-            child.utility = child.value_list.pop(0)
-            child.cumsum += child.utility
-            
-        #If the children are opponents
-        else:
-            #Utility will be negative and cumsum will decrement
             child.utility = -child.value_list.pop(0)
             child.cumsum = child.cumsum - child.utility
+        #If the children are opponents
+        else:
+            child.utility = child.value_list.pop(0)
+            child.cumsum += child.cumsum 
     return node
 
 def successor_func(node):
