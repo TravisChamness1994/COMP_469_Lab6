@@ -5,7 +5,7 @@ import math
 UNSUCCESSFUL_AGENT_BRANCH = 0
 #minimum list size to create a new branch
 MINIMUM_LIST_SIZE = 1
-#Set of terminal states - May not be necessary
+#Set of terminal states - May not be necessary - CURRENTLY UNUSED, DELETE UNLESS NEEDED
 terminal_states = []
 #Tracked success state of agent
 cumulative_success = False
@@ -47,20 +47,36 @@ def value(node):
     if not node.agent:
         return min_value(node)
 
+# Successor Helper performs the repetitious work for successor function 
+# of assigning appropriate values and cummulative sum for the respective 
+# agent or opponent.
 def successor_func_helper(node):
-    for child in node.children:
+    for index, child in enumerate(node.children):
         child.agent = not node.agent
         #Assign parent value
         child.parent = node
         #Accordingly update utility and cumsum
         #If the children are agents
         if child.agent:
-            child.utility = -child.value_list.pop(0)
-            child.cumsum = child.cumsum - child.utility
+            if index == 0:
+                child.utility = -child.value_list.pop(0)
+                child.cumsum = child.cumsum - child.utility
+            elif index == 1:
+                child.utility = -child.value_list.pop()
+                child.cumsum = child.cumsum - child.utility
+            else:
+                print("ERROR: Too many children exist")
+
         #If the children are opponents
         else:
-            child.utility = child.value_list.pop(0)
-            child.cumsum += child.cumsum 
+            if index == 0:
+                child.utility = child.value_list.pop(0)
+                child.cumsum += child.cumsum 
+            elif index ==1:
+                child.utility = child.value_list.pop()
+                child.cumsum += child.cumsum      
+            else:
+                print("ERROR: Too many children exist")
     return node
 
 def successor_func(node):
@@ -95,6 +111,7 @@ def max_value(node):
     for child in node.children:
         val = max(val, value(child))
     #Returning value establishes the tree branching values
+    print(val)
     return val        
 
 def min_value(node):
@@ -103,6 +120,7 @@ def min_value(node):
     for child in node.children:
         val = min(val, value(child))
     #Returning value establishes the tree branching values
+    print(val)
     return val
 
 # Minimax performs the minimax algorithm. 
