@@ -35,9 +35,11 @@ class Node:
 
         
 def value(node):
-    # If the value_list is empty
+    #The return of this value is not useful in this implementation. Disregard results from Value.
+    # What needs to be accounted for is the cummulative success variable which tracks whether
+    # any successful paths exist.
     if not node.value_list:
-        return node.utility
+        return node.utility 
     if node.agent:
         return max_value(node)
     if not node.agent:
