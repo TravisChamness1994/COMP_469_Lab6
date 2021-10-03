@@ -60,10 +60,10 @@ def successor_func_helper(node):
         if child.agent:
             if index == 0:
                 child.utility = -child.value_list.pop(0)
-                child.cumsum = child.cumsum - child.utility
+                child.cumsum = child.cumsum + child.utility
             elif index == 1:
                 child.utility = -child.value_list.pop()
-                child.cumsum = child.cumsum - child.utility
+                child.cumsum = child.cumsum + child.utility
             else:
                 print("ERROR: Too many children exist")
 
@@ -71,10 +71,10 @@ def successor_func_helper(node):
         else:
             if index == 0:
                 child.utility = child.value_list.pop(0)
-                child.cumsum += child.cumsum 
+                child.cumsum = child.cumsum + child.utility 
             elif index ==1:
                 child.utility = child.value_list.pop()
-                child.cumsum += child.cumsum      
+                child.cumsum = child.cumsum + child.utility
             else:
                 print("ERROR: Too many children exist")
     return node
@@ -110,8 +110,6 @@ def max_value(node):
     node = successor_func(node)
     for child in node.children:
         val = max(val, value(child))
-    #Returning value establishes the tree branching values
-    print(val)
     return val        
 
 def min_value(node):
@@ -119,8 +117,6 @@ def min_value(node):
     node = successor_func(node)
     for child in node.children:
         val = min(val, value(child))
-    #Returning value establishes the tree branching values
-    print(val)
     return val
 
 # Minimax performs the minimax algorithm. 
@@ -129,6 +125,6 @@ def minimax(value_list):
     global cumulative_success
     #Tracks whether the agent 
     root_node = Node(value_list)
-    print(value(root_node))
+    value(root_node)
     print(cumulative_success)
 minimax([1,2,5,2])
